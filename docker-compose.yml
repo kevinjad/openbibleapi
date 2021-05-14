@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  #database service
+  openbibledb:
+    image: mysql:latest
+    container_name: openbibledb
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bible
+    restart: always
+
+  #openbible application service
+  openbibleapi:
+    build: .
+    container_name: openbibleapi
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+
+    depends_on:
+      - openbibledb
