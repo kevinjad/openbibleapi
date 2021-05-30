@@ -3,6 +3,7 @@ package io.kevinjad.openbibleapi.services;
 import io.kevinjad.openbibleapi.entities.Verse;
 import io.kevinjad.openbibleapi.repositories.ASV_BibleRepository;
 import io.kevinjad.openbibleapi.repositories.KJV_BibleRepository;
+import io.kevinjad.openbibleapi.repositories.WEB_BibleRepository;
 import io.kevinjad.openbibleapi.repositories.YLT_BibleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class VerseService {
     private ASV_BibleRepository asv_bibleRepository;
 
     private YLT_BibleRepository ylt_bibleRepository;
+
+    private WEB_BibleRepository web_bibleRepository;
 
 
     public Verse getkjvVerse(Integer id){
@@ -44,14 +47,25 @@ public class VerseService {
         return verse;
     }
     @Autowired
-    public VerseService(KJV_BibleRepository kjv_bibleRepository, ASV_BibleRepository asv_bibleRepository, YLT_BibleRepository ylt_bibleRepository) {
+    public VerseService(KJV_BibleRepository kjv_bibleRepository, ASV_BibleRepository asv_bibleRepository, YLT_BibleRepository ylt_bibleRepository,WEB_BibleRepository web_bibleRepository) {
         this.kjv_bibleRepository = kjv_bibleRepository;
         this.asv_bibleRepository = asv_bibleRepository;
         this.ylt_bibleRepository = ylt_bibleRepository;
+        this.web_bibleRepository = web_bibleRepository;
     }
 
     public List<Verse> getyltVerseList(Integer id1, Integer id2){
         List<Verse> verses = ylt_bibleRepository.findListOfVerses(id1,id2);
+        return verses;
+    }
+
+    public Verse getwebVerse(Integer id){
+        Verse verse = web_bibleRepository.findVerseById(id);
+        return verse;
+    }
+
+    public List<Verse> getwebVerseList(Integer id1,Integer id2){
+        List<Verse> verses = web_bibleRepository.findListOfVerses(id1,id2);
         return verses;
     }
 }
